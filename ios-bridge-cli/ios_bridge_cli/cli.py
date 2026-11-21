@@ -262,6 +262,9 @@ def get_server_processes():
     try:
         for proc in psutil.process_iter(['pid', 'name', 'cmdline']):
             try:
+                # Skip this CLI process: its own cmdline contains 'ios-bridge'
+                if proc.info['pid'] == os.getpid():
+                    continue
                 if proc.info['cmdline']:
                     cmdline = ' '.join(proc.info['cmdline'])
                     # Look for Python processes running iOS Bridge server
