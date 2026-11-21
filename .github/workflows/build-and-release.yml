@@ -396,21 +396,3 @@ jobs:
           gh release upload ${{ github.ref_name }} release/checksums.txt || echo "Checksums not found"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-  publish-pypi:
-    name: Publish to PyPI
-    needs: [build-python]
-    runs-on: ubuntu-latest
-    if: startsWith(github.ref, 'refs/tags/')
-    steps:
-      - name: Download Python artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: python-package
-          path: dist/
-      
-      - name: Publish to PyPI
-        uses: pypa/gh-action-pypi-publish@release/v1
-        with:
-          password: ${{ secrets.PYPI_API_TOKEN }}
-          packages_dir: dist/
