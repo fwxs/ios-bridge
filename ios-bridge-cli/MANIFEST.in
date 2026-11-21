@@ -8,6 +8,7 @@ include TESTING_GUIDE.md
 include pyproject.toml
 include requirements.txt
 include build_and_package.py
+include bundle_server.py
 include generate_icons.py
 
 # Include Electron app
@@ -15,13 +16,13 @@ recursive-include ios_bridge_cli/electron_app *.json *.js *.html *.css *.png *.i
 recursive-include ios_bridge_cli/electron_app/src *
 recursive-include ios_bridge_cli/electron_app/assets *
 
+# Include bundled server (created by bundle_server.py)
+recursive-include ios_bridge_cli/server *.py *.html *.js
+
 # Exclude development and build files
-recursive-exclude * __pycache__
-recursive-exclude * *.py[co]
-recursive-exclude * .DS_Store
-recursive-exclude * .git*
-recursive-exclude ios_bridge_cli/electron_app/node_modules *
-recursive-exclude ios_bridge_cli/electron_app/dist *
 prune build
+prune ios_bridge_cli/electron_app/node_modules
+prune ios_bridge_cli/electron_app/dist
+global-exclude __pycache__ *.py[co] .DS_Store
 prune dist
 prune *.egg-info
