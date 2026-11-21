@@ -228,6 +228,61 @@ pip install fb-idb               # Python client (Python 3.10+)
 
 Run `./build.sh help` for the other targets (`build`, `test`, `generate`).
 
+#### Troubleshooting
+
+**`idb_companion` fails to link on Intel (x86_64): `Undefined symbols for architecture x86_64`**
+
+Building on an Intel Mac stops at the final link step (`Ld`) with output like:
+
+```
+ld: warning: ignoring file '.../PrivateHeaders/CoreSimulator/CoreSimulator.tbd',
+  tapi error: missing required architecture x86_64
+ld: warning: ignoring file '.../PrivateHeaders/AccessibilityPlatformTranslation/AccessibilityPlatformTranslation.tbd',
+  tapi error: missing required architecture x86_64
+Undefined symbols for architecture x86_64:
+  "_OBJC_CLASS_$_SimDevice", referenced from: ...
+  "_OBJC_CLASS_$_AXPTranslatorRequest", referenced from: ...
+ld: symbol(s) not found for architecture x86_64
+** BUILD FAILED **
+```
+
+*Cause:* the repository ships two stub libraries in `PrivateHeaders/` (`CoreSimulator.tbd` and
+`AccessibilityPlatformTranslation.tbd`) that only list `arm64-macos` as a target. The linker
+ignores a `.tbd` file whose architecture does not match the build, so every `SimDevice*` and
+`AXPTranslator*` symbol becomes undefined. You can confirm the build is x86_64 from
+`ARCHS=x86_64` / `-target x86_64-apple-macos15.0` in the build log.
+
+*Fix:* add `x86_64-macos` to the `targets:` list of both files, then rebuild. From the root of
+your idb checkout:
+
+```bash
+sed -i '' 's/arm64-macos/x86_64-macos, arm64-macos/g' \
+  PrivateHeaders/CoreSimulator/CoreSimulator.tbd \
+  PrivateHeaders/AccessibilityPlatformTranslation/AccessibilityPlatformTranslation.tbd
+
+# Verify: x86_64-macos must be listed under `targets:` in both files
+head -n 15 PrivateHeaders/CoreSimulator/CoreSimulator.tbd \
+  PrivateHeaders/AccessibilityPlatformTranslation/AccessibilityPlatformTranslation.tbd
+
+./build.sh build idb_companion
+```
+
+Notes:
+- Run the `sed` only once, otherwise `x86_64-macos` is added twice.
+- If the files are JSON instead of YAML, add `"x86_64-macos"` to the `targets` array by hand.
+- Do not try to regenerate the stubs with `xcrun tapi stubify` against
+  `/Applications/Xcode.app/.../CoreSimulator.framework` or
+  `/System/Library/PrivateFrameworks/AccessibilityPlatformTranslation.framework`. On recent
+  macOS those frameworks have no standalone binary on disk (they live in the dyld shared
+  cache), so the command fails with `no such file or directory`.
+- If you are on Apple Silicon and see `HOST_ARCH=x86_64`, your shell is running under Rosetta.
+  Build natively instead, e.g. `arch -arm64 ./build.sh build idb_companion`.
+- A warning about `CoreAudioTypes` may remain; it is not the cause of the failure.
+
+Once built, `idb_companion` runs standalone, for example
+`Build/Products/Release/idb_companion --list 1`. Use `--companion-path` to point the Python
+`idb` client at it, or copy it into `/usr/local/bin`.
+
 ### Option 3: Development Setup (Advanced)
 
 *Only needed for contributing to iOS Bridge or custom server modifications*
