@@ -709,3 +709,9 @@ Your expertise could make a significant impact on this project. Whether it's cod
 ---
 
 **Getting Started**: `pip install ios-bridge-cli && ios-bridge start-server && ios-bridge create "iPhone 15 Pro" "18.2" --wait && ios-bridge stream`
+## Run server with Poetry
+
+```bash
+poetry install
+poetry run python run.py   # http://localhost:8000
+```
