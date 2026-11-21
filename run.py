@@ -1,13 +1,24 @@
-import sys
+import argparse
 import os
+import sys
 
 # Add the current directory to Python path
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-# Import and run the main application
-from app.main import app
+
+def main():
+    from app.config.settings import settings
+
+    parser = argparse.ArgumentParser(description="Run the iOS Bridge server")
+    parser.add_argument("--host", default=settings.HOST)
+    parser.add_argument("--port", type=int, default=settings.PORT)
+    args = parser.parse_args()
+
+    import uvicorn
+    from app.main import app
+
+    uvicorn.run(app, host=args.host, port=args.port, log_level=settings.LOG_LEVEL.lower())
+
 
 if __name__ == "__main__":
-    import uvicorn
-    from app.config.settings import settings
-    uvicorn.run(app, host=settings.HOST, port=settings.PORT, log_level=settings.LOG_LEVEL.lower())
+    main()

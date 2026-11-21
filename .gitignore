@@ -24,3 +24,4 @@ ios-bridge-cli/build
 *.claude
 nativebridge-ios-poc.ipynb
 engineering-story.md
+*.egg-info/

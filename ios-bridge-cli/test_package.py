@@ -25,7 +25,6 @@ def test_package_structure():
         "ios_bridge_cli/electron_app/src/renderer.html",
         "ios_bridge_cli/electron_app/src/styles.css",
         "ios_bridge_cli/electron_app/src/preload.js",
-        "setup.py",
         "pyproject.toml",
         "README.md",
         "LICENSE",
