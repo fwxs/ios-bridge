@@ -207,6 +207,29 @@ pip install fb-idb
 ios-bridge start-server --host 0.0.0.0 --port 8000
 ```
 
+> **⚠️ Intel Macs (x86_64):** `brew install idb-companion` may not work on Intel Macs.
+> Install idb from the Meta tap instead:
+>
+> ```bash
+> brew install meta/fb/idb
+> ```
+>
+> The formula installs both `idb_companion` and the `idb` client.
+
+#### Building idb from source
+
+If Homebrew is not an option, build `idb_companion` from [meta/idb](https://github.com/meta/idb)
+(requires macOS 15+ with Xcode 26.0+):
+
+```bash
+brew install xcodegen protobuf
+git clone https://github.com/meta/idb.git && cd idb
+./build.sh build idb_companion   # output: Build/Distribution/idb_companion
+pip install fb-idb               # Python client (Python 3.10+)
+```
+
+Run `./build.sh help` for the other targets (`build`, `test`, `generate`).
+
 ### Option 3: Development Setup (Advanced)
 
 *Only needed for contributing to iOS Bridge or custom server modifications*
