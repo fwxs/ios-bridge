@@ -221,6 +221,16 @@ def resolve_session_id(ctx, session_id):
 
 def find_ios_bridge_server():
     """Find the iOS Bridge server directory"""
+    # Explicit override
+    env_path = os.environ.get("IOS_BRIDGE_SERVER_PATH")
+    if env_path and (Path(env_path) / "run.py").exists():
+        return Path(env_path)
+
+    # Server bundled inside the installed package
+    bundled = Path(__file__).parent / "server"
+    if (bundled / "run.py").exists():
+        return bundled
+
     # Look for the server in common locations relative to CLI
     cli_dir = Path(__file__).parent.parent.parent
     
@@ -1004,7 +1014,7 @@ def start_server(ctx, port: int, host: str, server_path: str, background: bool):
             server_dir = find_ios_bridge_server()
             if not server_dir:
                 click.echo("❌ iOS Bridge server not found!", err=True)
-                click.echo("Please specify the server path with --server-path or ensure the server is in one of these locations:")
+                click.echo("Please specify the server path with --server-path, set IOS_BRIDGE_SERVER_PATH, or ensure the server is in one of these locations:")
                 click.echo("  • ~/ios-bridge/")
                 click.echo("  • Current directory")
                 click.echo("  • Parent directory")

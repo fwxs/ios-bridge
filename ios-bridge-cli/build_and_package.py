@@ -12,6 +12,7 @@ import shutil
 import json
 from pathlib import Path
 import argparse
+from bundle_server import bundle_server
 from typing import List, Dict, Any
 
 class BuildManager:
@@ -88,6 +89,9 @@ class BuildManager:
                         shutil.rmtree(path)
                         print(f"🧹 Cleaned {path}")
             
+            # Ship the server inside the wheel
+            bundle_server()
+
             # Build package
             subprocess.run([
                 sys.executable, '-m', 'build', 
