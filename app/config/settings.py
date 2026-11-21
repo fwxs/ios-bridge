@@ -1,5 +1,6 @@
 from typing import Optional
 import os
+from pathlib import Path
 
 class Settings:
     """Application settings"""
@@ -37,7 +38,11 @@ class Settings:
     PORT: int = 8000
     
     # Paths
-    STATIC_DIR: str = "static"
+    # Resolved from this file so the server runs from any cwd (repo or installed wheel)
+    BASE_DIR: Path = Path(__file__).resolve().parents[2]
+    STATIC_DIR: str = str(BASE_DIR / "static")
+    TEMPLATES_DIR: str = str(BASE_DIR / "templates")
+    STORAGE_DIR: str = os.path.join(os.path.expanduser("~"), ".ios-bridge", "session_storage")
     TEMP_DIR: Optional[str] = None
     
     # Logging

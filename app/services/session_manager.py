@@ -18,7 +18,7 @@ class SessionManager:
         
         # Set up storage directory
         if storage_dir is None:
-            storage_dir = os.path.join(os.path.dirname(settings.STATIC_DIR), "session_storage")
+            storage_dir = settings.STORAGE_DIR
         
         self.storage_dir = Path(storage_dir)
         self.storage_dir.mkdir(parents=True, exist_ok=True)
