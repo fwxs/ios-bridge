@@ -22,7 +22,6 @@ ios-bridge-cli/
 │           ├── renderer.js       # WebSocket client & UI logic
 │           ├── renderer.html     # Desktop interface HTML
 │           └── styles.css        # Modern dark theme CSS
-├── setup.py                      # Legacy setuptools configuration
 ├── pyproject.toml                # Modern Python packaging
 ├── requirements.txt              # Python dependencies
 ├── MANIFEST.in                   # Package file inclusion rules
