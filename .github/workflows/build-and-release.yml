@@ -36,6 +36,7 @@ jobs:
       - name: Build Python package
         run: |
           cd ios-bridge-cli
+          python bundle_server.py
           python -m build
       
       - name: Upload Python artifacts
