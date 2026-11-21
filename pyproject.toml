@@ -1,0 +1,26 @@
+[project]
+name = "ios-bridge"
+version = "1.0.3"
+description = "iOS Simulator remote control server"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi>=0.116",
+    "uvicorn[standard]>=0.35",
+    "jinja2>=3.1",
+    "aiortc>=1.13",
+    "av>=14",
+    "opencv-python>=4.10",
+    "numpy>=2",
+    "pillow>=11",
+    "psutil>=7",
+    "pydantic>=2.11",
+    "python-multipart>=0.0.20",
+]
+
+[tool.poetry]
+package-mode = false
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
