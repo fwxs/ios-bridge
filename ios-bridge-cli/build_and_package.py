@@ -346,7 +346,7 @@ echo "Run 'ios-bridge --help' to get started."
                 
                 script_path = scripts_dir / script_name
                 if script_path.exists():
-                    shutil.copy2(script_path, platform_release / "install" + script_path.suffix)
+                    shutil.copy2(script_path, platform_release / f"install{script_path.suffix}")
                 
                 # Create README for the package
                 readme_content = f"""# iOS Bridge CLI v{version} - {platform_name.title()}
