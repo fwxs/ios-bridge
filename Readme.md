@@ -207,14 +207,12 @@ pip install fb-idb
 ios-bridge start-server --host 0.0.0.0 --port 8000
 ```
 
-> **⚠️ Intel Macs (x86_64):** `brew install idb-companion` may not work on Intel Macs.
-> Install idb from the Meta tap instead:
->
-> ```bash
-> brew install meta/fb/idb
-> ```
->
-> The formula installs both `idb_companion` and the `idb` client.
+> **⚠️ Intel Macs (x86_64):** the Homebrew formula (`brew install meta/fb/idb`) installs a
+> prebuilt companion that, per the [idb installation docs](https://fbidb.io/idb/installation/),
+> requires an **arm64** Mac on macOS 15+ with Xcode 26+. Homebrew also no longer builds bottles
+> for Intel. On Intel Macs, build idb from source instead (below). If you previously tapped
+> `facebook/fb`, run `brew update` and `brew trust meta/fb`, or untap the old tap, to avoid
+> "formulae found in multiple taps" errors.
 
 #### Building idb from source
 
